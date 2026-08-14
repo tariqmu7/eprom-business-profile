@@ -1,0 +1,3 @@
+# the profile is a deliverable that is e-mailed around as a file — keep it
+# byte-identical to the copy in 1_Final_Deliverables, no line-ending rewriting
+*.html -text
