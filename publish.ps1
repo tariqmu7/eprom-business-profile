@@ -57,7 +57,11 @@ $manifest = [ordered]@{
   notes     = $Notes
   published = (Get-Date).ToString("yyyy-MM-dd HH:mm")
 }
-($manifest | ConvertTo-Json) | Out-File -FilePath "version.json" -Encoding utf8
+# UTF-8 with NO BOM — a BOM in front of the JSON breaks strict parsers
+[System.IO.File]::WriteAllText(
+  (Join-Path $PSScriptRoot "version.json"),
+  ($manifest | ConvertTo-Json),
+  (New-Object System.Text.UTF8Encoding($false)))
 
 git add index.html version.json
 $msg = "Publish version $version"
