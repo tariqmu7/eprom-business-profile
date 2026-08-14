@@ -11,7 +11,7 @@
      version.json from them, so the published manifest can never
      disagree with the file it describes. Bump BOTH when publishing.
      ============================================================ -->
-<meta name="profile-version" content="2026.08.14-1">
+<meta name="profile-version" content="2026.08.14-2">
 <meta name="profile-released" content="14 August 2026">
 <style>
 /* ============================================================
@@ -1312,10 +1312,11 @@ footer img{height:34px; margin-bottom:16px}
   <div class="updeyebrow">Newer version available</div>
   <h4>Version <span id="updnew">—</span> has been published</h4>
   <p>You are reading <b id="updold">—</b>, released <span id="updoldon">—</span>.
-     Update to see the latest services, packages and figures.</p>
+     Open the latest version now, or download it to replace this file so your
+     offline copy is current too.</p>
   <div class="updacts">
-    <button class="pri" id="updnow" type="button">Update now</button>
-    <button id="updsave" type="button">Save updated file</button>
+    <button class="pri" id="updnow" type="button">Open the latest</button>
+    <button id="updsave" type="button">Download updated file</button>
   </div>
 </aside>
 
@@ -3216,6 +3217,7 @@ openFromHash();
   const REPO   = "eprom-business-profile";
   const BRANCH = "main";
   const RAW    = "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/";
+  const PAGES  = "https://"+OWNER+".github.io/"+REPO+"/";
   const SAVE_AS = "EPROM Business Profile 2026.html";
   const DISMISS_KEY = "eprom-profile-dismissed";
 
@@ -3269,9 +3271,10 @@ openFromHash();
         if(manual) state.textContent = "You have the latest version (" + (LOCAL||"—") + ").";
       }
     }).catch(()=>{
-      if(manual) state.textContent = navigator.onLine
-        ? "Could not reach the update server. Try again later."
-        : "You are offline — the document works normally, but cannot check for updates.";
+      /* one honest message for both causes: navigator.onLine is NOT reliable —
+         it reports true on a machine with no route to the internet. */
+      if(manual) state.textContent =
+        "Could not check for updates — you may be offline. The document works normally.";
     });
   }
 
@@ -3290,13 +3293,13 @@ openFromHash();
   }
   function done(el){ el.textContent = el.dataset.label || el.textContent; el.disabled = false; }
 
-  $("#updnow").addEventListener("click", function(){
-    const b = this; busy(b, "Downloading…");
-    fetchLatestHTML().then(html=>{
-      /* the scope sheet and theme live in localStorage, so both survive the swap */
-      try{ sessionStorage.setItem("eprom-updated-to", latest ? latest.version : ""); }catch(e){}
-      document.open(); document.write(html); document.close();
-    }).catch(()=>{ done(b); toast("Update failed — check your connection and try again."); });
+  /* ⚠ DO NOT "refresh in place" with document.open()/write(). It replaces the
+     MARKUP but keeps the SAME JavaScript realm, so the incoming copy's top-level
+     `const CATS` (and every other const in this script) is a redeclaration — the
+     new document's script dies with a SyntaxError and the catalogue renders EMPTY.
+     Proven end-to-end in _working/updatecheck.mjs. Navigating gives a clean realm. */
+  $("#updnow").addEventListener("click", ()=>{
+    location.href = PAGES + "?v=" + encodeURIComponent(latest ? latest.version : Date.now());
   });
 
   $("#updsave").addEventListener("click", function(){
@@ -3307,7 +3310,7 @@ openFromHash();
       a.href = url; a.download = SAVE_AS;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(()=>URL.revokeObjectURL(url), 4000);
-      done(b); toast("Saved — replace your old copy with the downloaded file.");
+      done(b); toast("Downloaded — replace your old copy with the new file.");
     }).catch(()=>{ done(b); toast("Download failed — check your connection and try again."); });
   });
 
@@ -3317,15 +3320,6 @@ openFromHash();
   });
 
   btn.addEventListener("click", ()=>check(true));
-
-  /* confirmation after an in-place update, written by the copy we replaced */
-  try{
-    const was = sessionStorage.getItem("eprom-updated-to");
-    if(was !== null){
-      sessionStorage.removeItem("eprom-updated-to");
-      setTimeout(()=>toast("Updated to version " + (LOCAL || was) + "."), 700);
-    }
-  }catch(e){}
 
   /* automatic, quiet, and late enough not to compete with first paint */
   setTimeout(()=>{ check(false); }, 1500);
