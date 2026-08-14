@@ -41,8 +41,21 @@ There is also a **Check for updates** link in the page footer, next to the versi
 tags (so the manifest can never contradict the file), commits and pushes. It
 refuses to publish twice under the same version string.
 
-Recipients see the update the next time they open their copy online. GitHub's raw
-CDN caches for a few minutes, so allow ~5 minutes before testing.
+Recipients see the update the next time they open their copy online.
+
+**Allow ~5 minutes before testing.** Two caches sit in front of a fresh publish and
+neither can be defeated from the page: GitHub's raw CDN keeps serving the previous
+`version.json` for a few minutes (a `?ts=` cache-buster does *not* reliably beat it),
+and GitHub Pages needs a minute or so to rebuild. This is a delay, never a failure —
+the next open picks it up.
+
+`.gitattributes` marks `*.html` as `-text` so the published file stays byte-identical
+to the deliverable. Do not remove it.
+
+**GitHub Pages must stay enabled** — the card's "Open the latest" button navigates to
+the Pages URL. (It cannot reload itself in place: `document.write` keeps the same
+JavaScript realm, so the incoming copy's top-level `const` declarations collide and
+its script dies. See the comment in the file.)
 
 ## Files
 
