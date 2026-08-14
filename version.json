@@ -1,7 +1,7 @@
 {
-    "version":  "2026.08.14-3",
+    "version":  "2026.08.14-4",
     "released":  "14 August 2026",
     "file":  "index.html",
-    "notes":  "Rail chips left-aligned, themed catalogue scrollbar, terminal link retargeted",
-    "published":  "2026-08-14 07:46"
+    "notes":  "How-to-use guide moved into a \u0027?\u0027 dialog in the top bar (the \u0027Read this first\u0027 card is gone); Arabic legal name removed",
+    "published":  "2026-08-14 16:21"
 }

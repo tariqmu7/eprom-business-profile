@@ -11,7 +11,7 @@
      version.json from them, so the published manifest can never
      disagree with the file it describes. Bump BOTH when publishing.
      ============================================================ -->
-<meta name="profile-version" content="2026.08.14-3">
+<meta name="profile-version" content="2026.08.14-4">
 <meta name="profile-released" content="14 August 2026">
 <style>
 /* ============================================================
@@ -204,45 +204,82 @@ section .eyebrow{color:var(--sec)}
   background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
   padding:clamp(18px,2.2vw,26px); box-shadow:var(--shadow);
 }
-/* "Read this first" — a NOTE sitting directly above the catalogue heading it explains.
-   Still deliberately loud, but laid out as a wide note (2 columns) rather than a tall card. */
-.card.howto{
-  position:relative; overflow:hidden; margin-bottom:clamp(22px,2.6vw,32px);
-  padding:clamp(16px,1.9vw,22px) clamp(18px,2.2vw,26px);
-  border:2px solid var(--green); border-radius:var(--radius);
-  background:linear-gradient(150deg, rgba(107,186,61,.20), rgba(107,186,61,.055) 55%, transparent),var(--panel);
-  box-shadow:0 0 0 5px rgba(107,186,61,.12), var(--shadow);
+/* ---------- "How to use this catalogue" dialog (the "?" in the top bar) ----------
+   Replaces the old "Read this first" card: the same guidance, on demand, out of the flow. */
+.helpbtn{font-weight:800}
+.helpbtn svg{width:19px;height:19px}
+.helpbtn.lit{border-color:var(--green); color:var(--green-2); background:rgba(107,186,61,.12)}
+.helpscrim{position:fixed; inset:0; background:rgba(2,10,20,.66); backdrop-filter:blur(2px);
+  z-index:94; opacity:0; pointer-events:none; transition:.3s}
+.helpscrim.show{opacity:1; pointer-events:auto}
+.helpmodal{
+  position:fixed; z-index:95; left:50%; top:50%; transform:translate(-50%,-46%) scale(.98);
+  width:min(880px,calc(100% - 32px)); max-height:min(86vh,880px);
+  display:flex; flex-direction:column; opacity:0; pointer-events:none;
+  background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:0 40px 90px -40px rgba(0,0,0,.85); transition:.3s var(--ease);
 }
-.card.howto::before{
-  content:""; position:absolute; left:0; top:0; bottom:0; width:5px;
-  background:linear-gradient(180deg,var(--green-2),var(--blue-3));
+.helpmodal.open{opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1)}
+.helphead{
+  padding:18px 20px; border-bottom:1px solid var(--line);
+  display:flex; align-items:flex-start; gap:14px;
+  background:linear-gradient(150deg, rgba(107,186,61,.16), transparent 60%);
+  border-radius:var(--radius) var(--radius) 0 0;
 }
-.card.howto .howhead{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
-.card.howto .howhead .eyebrow{color:var(--green-2); font-size:13px; letter-spacing:.2em}
-.howbadge{
-  display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px;
-  background:var(--green); color:#04240b; font:800 10.5px/1 inherit;
-  letter-spacing:.14em; text-transform:uppercase;
+.helphead .eyebrow{color:var(--green-2); font-size:12px; letter-spacing:.2em; margin-bottom:6px}
+.helphead h3{font-size:20px; line-height:1.25}
+.helphead > div:first-child{flex:1; min-width:0}
+/* the OS paints a bright WHITE scrollbar down a dark panel — theme it, same as the rail.
+   scrollbar-width/color for Firefox + modern Chromium, ::-webkit- for Safari/older Chrome. */
+.helpbody{flex:1; overflow-y:auto; padding:20px 22px; display:grid; gap:20px;
+  scrollbar-width:thin; scrollbar-color:var(--line-2) transparent}
+.helpbody::-webkit-scrollbar{width:8px}
+.helpbody::-webkit-scrollbar-track{background:transparent}
+.helpbody::-webkit-scrollbar-thumb{background:var(--line-2); border-radius:99px;
+  border:2px solid transparent; background-clip:padding-box}
+.helpbody::-webkit-scrollbar-thumb:hover{background:var(--ink-3); background-clip:padding-box}
+.helpsec > h4{
+  font:800 12px/1 inherit; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:10px;
 }
-.howbadge svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4}
-.card.howto ul{color:var(--ink) !important}
-.card.howto ul li::marker{color:var(--green-2)}
-.card.howto ul li b{color:var(--green-2)}
-/* min(300px,100%) floor, not a bare 300px — a bare floor overflows a 320px viewport */
-.howlist{
-  font-size:14.5px; padding-left:18px; margin:12px 0 0; list-style:disc;
-  display:grid; gap:8px 26px; grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
+.helpsec p{font-size:14.2px; color:var(--ink-2); line-height:1.65}
+.helplist{margin:0; padding-left:18px; display:grid; gap:9px; font-size:14px;
+  color:var(--ink-2); line-height:1.6}
+.helplist li::marker{color:var(--green)}
+.helplist b{color:var(--ink); font-weight:650}
+.helpsteps{margin:0; padding-left:20px; display:grid; gap:9px; font-size:14px;
+  color:var(--ink-2); line-height:1.6}
+.helpsteps li::marker{color:var(--green-2); font-weight:800}
+.helpsteps b{color:var(--ink); font-weight:650}
+/* one row per chapter: the number, then what the chapter is for */
+.helpchapters{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+.helpchapters li{
+  display:grid; grid-template-columns:minmax(0,1fr); gap:4px;
+  border:1px solid var(--line); border-radius:12px; background:var(--panel-2); padding:12px 14px;
 }
-.howlink{color:var(--green-2); font-weight:700}
-/* PRE-EXISTING light-theme defect, fixed here: --green-2 (#83c341) on the note's pale green
-   wash measures 1.97:1. The light theme needs the darker green everywhere inside the note. */
-html[data-theme="light"] .card.howto .howhead .eyebrow,
-html[data-theme="light"] .card.howto ul li b,
-html[data-theme="light"] .card.howto ul li::marker,
-html[data-theme="light"] .howlink{color:#397a13}
-@keyframes howpulse{0%,100%{box-shadow:0 0 0 5px rgba(107,186,61,.12),var(--shadow)}
-                    50%{box-shadow:0 0 0 11px rgba(107,186,61,.05),var(--shadow)}}
-.card.howto.in{animation:howpulse 3.4s var(--ease) 1.2s 3}
+.helpchapters .ch{font:800 12px/1 inherit; letter-spacing:.12em; text-transform:uppercase; color:var(--green-2)}
+.helpchapters .cd{font-size:13.8px; color:var(--ink-2); line-height:1.6}
+.helpchapters .cd b{color:var(--ink); font-weight:650}
+.helpkeys{display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
+.helpkey{display:flex; align-items:center; gap:10px; font-size:13.6px; color:var(--ink-2)}
+.helpkey .kb{
+  flex:0 0 auto; min-width:30px; text-align:center; padding:3px 8px; border-radius:7px;
+  border:1px solid var(--line-2); background:var(--panel-2); color:var(--ink);
+  font:700 12px/1.35 inherit;
+}
+.helplink{color:var(--green-2); font-weight:700}
+html[data-theme="light"] .helphead .eyebrow,
+html[data-theme="light"] .helpchapters .ch,
+html[data-theme="light"] .helplist b + b,
+html[data-theme="light"] .helplink,
+html[data-theme="light"] .helpbtn.lit{color:#397a13}
+.helpfoot{padding:14px 20px; border-top:1px solid var(--line); display:flex; gap:10px;
+  align-items:center; justify-content:space-between; flex-wrap:wrap}
+.helpfoot .hf{font-size:12.6px; color:var(--ink-3)}
+@media(max-width:640px){
+  .helpmodal{width:calc(100% - 16px); max-height:92vh}
+  .helpbody{padding:16px}
+}
 
 .factlist{display:grid; gap:12px; margin-top:6px}
 .fact{display:flex; gap:13px; align-items:flex-start; padding:13px 0; border-bottom:1px dashed var(--line)}
@@ -836,11 +873,7 @@ footer img{height:34px; margin-bottom:16px}
     --s-intro:#0d5fae; --s-life:#08776c; --s-pack:#8a5705;
     --s-serv:#397a13;  --s-sect:#6a41c4; --s-term:#0a7ba6; --s-cred:#8a6a0c}
   body{background:#fff; color:#000; font-size:10.5pt}
-  header.top,.explorer-controls,.scopefab,.drawer,.scrim,.toast,.herocta,.addbtn,.kbd,.catadd,.detdrawer,.detscrim,.morebtn,.packacts,.upd,.updlink{display:none !important}
-  .card.howto{border:2px solid #6bba3d !important; background:#f3faee !important; animation:none !important;
-    box-shadow:none !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
-  .card.howto ul li b,.card.howto .eyebrow{color:#3e7a1c !important}
-  .howbadge{background:#6bba3d !important; color:#04240b !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  header.top,.explorer-controls,.scopefab,.drawer,.scrim,.toast,.herocta,.addbtn,.kbd,.catadd,.detdrawer,.detscrim,.morebtn,.packacts,.upd,.updlink,.helpmodal,.helpscrim{display:none !important}
   .hero{background:#03172c !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; padding:24pt 0 0}
   .stats{grid-template-columns:repeat(6,1fr)}
   /* the per-section accent tint is a screen device — on paper keep only the hairline rule */
@@ -886,6 +919,7 @@ footer img{height:34px; margin-bottom:16px}
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.2a2.8 2.8 0 1 1 3.4 3.2c-.7.2-1.1.8-1.1 1.5v.6"/><path d="M11.6 17.4h.01"/></symbol>
   <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5.2 5.2L20 7"/></symbol>
@@ -911,13 +945,13 @@ footer img{height:34px; margin-bottom:16px}
       <a href="#who">Introduction</a>
       <a href="#lifecycle">Lifecycle</a>
       <a href="#packages">Packages</a>
-      <a href="#howto">Read this first</a>
       <a href="#services">Services</a>
       <a href="#sectors">Sectors</a>
       <a href="#credentials">Credentials</a>
       <a href="https://eprom.com.eg/contact-us/" target="_blank" rel="noopener noreferrer" title="Opens eprom.com.eg/contact-us in a new tab">Contact&nbsp;us <svg class="extlink" aria-hidden="true"><use href="#i-ext"/></svg></a>
     </nav>
     <div class="tools">
+      <button class="iconbtn helpbtn" id="helpbtn" title="How to use this catalogue" aria-label="How to use this catalogue" aria-haspopup="dialog"><svg><use href="#i-help"/></svg></button>
       <button class="iconbtn" id="themebtn" title="Switch light / dark"><svg><use href="#i-sun"/></svg></button>
       <button class="iconbtn" id="printbtn" title="Print or save as PDF"><svg><use href="#i-print"/></svg><span>Print</span></button>
     </div>
@@ -999,7 +1033,7 @@ footer img{height:34px; margin-bottom:16px}
       <div class="card rv">
         <h3 style="font-size:19px">Company at a glance</h3>
         <div class="factlist">
-          <div class="fact"><div class="k">Legal name</div><div class="v">Egyptian Projects Operation &amp; Maintenance Company (EPROM) — <span dir="rtl">شركة إبروم لتشغيل وصيانة المشروعات</span></div></div>
+          <div class="fact"><div class="k">Legal name</div><div class="v">Egyptian Projects Operation &amp; Maintenance Company (EPROM)</div></div>
           <div class="fact"><div class="k">Ownership</div><div class="v">Affiliated to the <b>Egyptian General Petroleum Corporation (EGPC)</b> group</div></div>
           <div class="fact"><div class="k">Established</div><div class="v">2002 — over 20 years of continuous operation &amp; maintenance delivery</div></div>
           <div class="fact"><div class="k">Headquarters</div><div class="v">Alexandria, Egypt · operating sites across Egypt and abroad</div></div>
@@ -1068,21 +1102,6 @@ footer img{height:34px; margin-bottom:16px}
 <!-- ============ SERVICES ============ -->
 <section id="services">
   <div class="wrap">
-      <!-- "Read this first" — a note standing immediately above the catalogue it explains -->
-      <div class="card howto rv" id="howto">
-        <div class="howhead">
-          <span class="howbadge"><svg><use href="#i-arrow"/></svg> Read this first</span>
-          <p class="eyebrow">How to use this catalogue</p>
-        </div>
-        <ul class="howlist">
-          <li>Use the <b>search box</b> below to find any capability by keyword — try "HAZOP", "PAUT", "demurrage", "LIMS".</li>
-          <li>Tick <b>+</b> on any module — or press <b>Select all shown</b> / a category's <b>Add all</b> — to build a <b>scope sheet</b> for a specific client, then copy or print it.</li>
-          <li>Click any module card to open its <b>full scope</b> in the detail panel.</li>
-          <li>Click any stage on the <b>lifecycle map</b>, or a <b>category chip</b>, to narrow the catalogue to what that client actually buys.</li>
-          <li>Press <b>Print</b> at any time to produce a clean PDF of the whole profile.</li>
-          <li>Need us? <a href="https://eprom.com.eg/contact-us/" target="_blank" rel="noopener noreferrer" class="howlink">Contact us on eprom.com.eg</a>.</li>
-        </ul>
-      </div>
     <div class="sechead rv">
       <p class="eyebrow">04 — Fields of services 2026</p>
       <h2>The complete service catalogue.</h2>
@@ -1297,6 +1316,140 @@ footer img{height:34px; margin-bottom:16px}
     <button class="linkbtn" id="clearscope" style="justify-self:center; margin-top:4px">Clear all</button>
   </div>
 </aside>
+<div class="helpscrim" id="helpscrim"></div>
+<div class="helpmodal" id="helpmodal" role="dialog" aria-modal="true" aria-labelledby="helptitle" aria-hidden="true">
+  <div class="helphead">
+    <div>
+      <p class="eyebrow">Guide</p>
+      <h3 id="helptitle">How to use this catalogue</h3>
+    </div>
+    <button class="iconbtn" id="closehelp" title="Close this guide">Close</button>
+  </div>
+  <div class="helpbody" id="helpbody">
+
+    <div class="helpsec">
+      <h4>What this document is</h4>
+      <p>One self-contained file holding the whole EPROM offering: <b>12 categories, 49 service
+      modules</b>, as issued in the EPROM Services List 2026. It is interactive &mdash; you search it,
+      filter it, open any module for its full scope, and tick modules to build a
+      <b>scope sheet</b> for one specific client, which you then copy, print or e-mail.
+      Nothing is sent anywhere and no internet connection is needed; your selection is kept in this
+      browser only.</p>
+    </div>
+
+    <div class="helpsec">
+      <h4>The six chapters, and what each one is for</h4>
+      <ul class="helpchapters">
+        <li><span class="ch">01 &mdash; Introduction</span>
+          <span class="cd">Who EPROM is in one screen: legal identity, ownership, headquarters,
+          headcount and the company-at-a-glance facts. <b>Use it to open a meeting</b> or to answer
+          &ldquo;who are you?&rdquo; before any technical talk.</span></li>
+        <li><span class="ch">02 &mdash; The asset lifecycle</span>
+          <span class="cd">A map of the asset's life &mdash; from pre-commissioning and start-up
+          through operation, maintenance and integrity, to turnaround and late life.
+          <b>Click any stage to filter the catalogue</b> down to what a client at that stage
+          actually buys.</span></li>
+        <li><span class="ch">03 &mdash; Prepared packages</span>
+          <span class="cd">Three ready-made bundles &mdash; <b>Integrated Terminal Services</b>,
+          <b>Operations &amp; Maintenance</b> and <b>Asset Integrity</b>. Each card says how many
+          modules it contains, adds them all to the scope sheet in one click, or shows just those
+          modules in the catalogue. Packages deliberately overlap on a few shared
+          modules.</span></li>
+        <li><span class="ch">04 &mdash; The complete service catalogue</span>
+          <span class="cd">The heart of the document: every category and module with its key
+          deliverables. Categories start <b>collapsed</b> so the chapter reads as a 12-line index
+          &mdash; click a heading to open it, or use <b>Expand all</b>. The side rail carries the
+          search box, the category chips and the scope-sheet buttons.</span></li>
+        <li><span class="ch">05 &mdash; Where we work</span>
+          <span class="cd">The sectors served &mdash; refineries, petrochemicals, gas plants, port
+          and terminal operations, power and utilities. Each card links into the catalogue
+          categories that serve that sector.</span></li>
+        <li><span class="ch">06 &mdash; Credentials &amp; track record</span>
+          <span class="cd">Clients, certifications and delivery record &mdash; the proof behind the
+          offering. <b>Use it to close</b>, after the scope is agreed.</span></li>
+      </ul>
+    </div>
+
+    <div class="helpsec">
+      <h4>Building a scope sheet &mdash; step by step</h4>
+      <ol class="helpsteps">
+        <li><b>Narrow the catalogue first.</b> Type in the search box, click a category chip, click a
+          lifecycle stage, or press <b>Show these N modules</b> on a package. Any filter automatically
+          opens the categories it left visible, so a match never hides behind a shut heading.</li>
+        <li><b>Tick what the client buys.</b> Press <b>+</b> on any module card, or
+          <b>Add all N</b> on a category heading, or <b>Select all shown</b> in the rail to take
+          everything the current filter left on screen.</li>
+        <li><b>Check the sheet.</b> The floating button bottom-right shows the running count; open it
+          to see the modules grouped by category, and the <b>prepared package</b> the selection
+          matches, if any.</li>
+        <li><b>Send it out.</b> Copy as text, print it, or use the e-mail button &mdash; see
+          below.</li>
+        <li><b>Start over</b> with <b>Clear all</b> in the scope drawer, or <b>Reset view</b> in the
+          rail to drop every filter without losing the selection.</li>
+      </ol>
+    </div>
+
+    <div class="helpsec">
+      <h4>Finding things fast</h4>
+      <ul class="helplist">
+        <li><b>Search</b> matches module titles, descriptions and tags &mdash; try
+          &ldquo;HAZOP&rdquo;, &ldquo;PAUT&rdquo;, &ldquo;demurrage&rdquo;, &ldquo;LIMS&rdquo;,
+          &ldquo;turnaround&rdquo;.</li>
+        <li><b>Category chips</b> in the rail switch to one category at a time.</li>
+        <li><b>Lifecycle stages</b> filter by when in the asset's life the service is bought.</li>
+        <li><b>Click any module card</b> (anywhere except the <b>+</b>) to open its
+          <b>full scope</b> &mdash; deliverables, standards, methods and typical outputs. Cards
+          marked <b>View full scope</b> carry authored detail; the few marked
+          <b>View details</b> say honestly that the extended scope is available on request.</li>
+        <li>Every filter can be combined, and the result line always reports how many modules
+          across how many categories are showing.</li>
+      </ul>
+    </div>
+
+    <div class="helpsec">
+      <h4>Getting it out: copy, print, e-mail</h4>
+      <ul class="helplist">
+        <li><b>Copy as text</b> puts the full detailed scope &mdash; every module's authored blocks,
+          items and notes &mdash; on the clipboard, ready to paste into a proposal or a
+          message.</li>
+        <li><b>Print this scope sheet</b> produces a clean client-ready PDF of the selection only.
+          Select all 49 and print, and you get the complete detailed catalogue.</li>
+        <li><b>E-mail</b> copies the same full text to the clipboard and opens a short message with a
+          marked place to paste it &mdash; mail links are length-limited, so the detail travels on the
+          clipboard, never truncated.</li>
+        <li><b>Print</b> in the top bar prints the whole profile, with the interactive controls
+          hidden.</li>
+      </ul>
+    </div>
+
+    <div class="helpsec">
+      <h4>Keyboard shortcuts</h4>
+      <div class="helpkeys">
+        <div class="helpkey"><span class="kb">/</span><span>Jump to the search box</span></div>
+        <div class="helpkey"><span class="kb">Esc</span><span>Close the open panel, then clear the search</span></div>
+        <div class="helpkey"><span class="kb">?</span><span>Open this guide</span></div>
+      </div>
+    </div>
+
+    <div class="helpsec">
+      <h4>Theme, and staying up to date</h4>
+      <ul class="helplist">
+        <li>The <b>sun / moon</b> button switches light and dark; printing always uses the light
+          treatment.</li>
+        <li>This file <b>checks for a newer published version</b> when it is opened online, and offers
+          to open or download it. Offline it stays silent and unchanged. The version and a permanent
+          <b>Check for updates</b> link sit in the footer.</li>
+        <li>Questions, or a scope you cannot find here?
+          <a href="https://eprom.com.eg/contact-us/" target="_blank" rel="noopener noreferrer" class="helplink">Contact us on eprom.com.eg</a>.</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="helpfoot">
+    <span class="hf">EPROM Business Profile 2026 &mdash; interactive service catalogue</span>
+    <button class="btn btn-primary" id="helpstart" style="justify-content:center">Go to the catalogue</button>
+  </div>
+</div>
 <div class="detscrim" id="detscrim"></div>
 <aside class="detdrawer" id="detdrawer" role="dialog" aria-modal="true" aria-labelledby="dettitle">
   <div class="dethead">
@@ -2625,11 +2778,46 @@ $("#lifemap").addEventListener("click", e=>{
   document.getElementById("services").scrollIntoView({behavior:"smooth",block:"start"});
   toast("Showing services for: " + b.querySelector("h4").textContent);
 });
+
+/* ============================================================
+   "HOW TO USE THIS CATALOGUE" DIALOG  (the "?" in the top bar)
+   Replaces the old "Read this first" card. Same guidance, on demand.
+   ============================================================ */
+const helpModal = $("#helpmodal"), helpScrim = $("#helpscrim");
+function helpOpen(){ return helpModal.classList.contains("open"); }
+function openHelp(){
+  if(typeof closeDetDrawer === "function" && $("#detdrawer").classList.contains("open")) closeDetDrawer();
+  helpModal.classList.add("open"); helpScrim.classList.add("show");
+  helpModal.setAttribute("aria-hidden","false");
+  $("#helpbtn").classList.add("lit");
+  $("#helpbody").scrollTop = 0;
+  $("#closehelp").focus();
+}
+function closeHelp(){
+  helpModal.classList.remove("open"); helpScrim.classList.remove("show");
+  helpModal.setAttribute("aria-hidden","true");
+  $("#helpbtn").classList.remove("lit");
+}
+$("#helpbtn").addEventListener("click", ()=> helpOpen() ? closeHelp() : openHelp());
+$("#closehelp").addEventListener("click", closeHelp);
+$("#helpscrim").addEventListener("click", closeHelp);
+$("#helpstart").addEventListener("click", ()=>{
+  closeHelp();
+  document.getElementById("services").scrollIntoView({behavior:"smooth", block:"start"});
+});
+/* "?" opens it from anywhere outside a text field */
+document.addEventListener("keydown", e=>{
+  if(e.key === "?" && !/input|textarea/i.test(document.activeElement.tagName)){
+    e.preventDefault(); helpOpen() ? closeHelp() : openHelp();
+  }
+});
+
 /* "/" focuses search, Esc clears */
 document.addEventListener("keydown", e=>{
   if(e.key==="/" && !/input|textarea/i.test(document.activeElement.tagName)){ e.preventDefault(); $("#q").focus(); }
-  if(e.key==="Escape"){ 
-    if($("#detdrawer").classList.contains("open")) closeDetDrawer();
+  if(e.key==="Escape"){
+    if(helpOpen()) closeHelp();
+    else if($("#detdrawer").classList.contains("open")) closeDetDrawer();
     else if($("#drawer").classList.contains("open")) closeDrawer(); 
     else if(term){ resetView(); } 
   }
@@ -2844,7 +3032,7 @@ function syncPacks(){
   });
 }
 
-function openDrawer(){ $("#drawer").classList.add("open"); $("#scrim").classList.add("show"); }
+function openDrawer(){ if(helpOpen()) closeHelp(); $("#drawer").classList.add("open"); $("#scrim").classList.add("show"); }
 function closeDrawer(){ $("#drawer").classList.remove("open"); $("#scrim").classList.remove("show"); renderScope(); }
 $("#scopefab").addEventListener("click", openDrawer);
 $("#closedrawer").addEventListener("click", closeDrawer);
@@ -2856,6 +3044,7 @@ $("#scrim").addEventListener("click", closeDrawer);
 let detKey = null, detReturnFocus = null;
 function openDetDrawer(){
   detReturnFocus = document.activeElement;
+  if(helpOpen()) closeHelp();                                  /* never stack under the guide */
   if($("#drawer").classList.contains("open")) closeDrawer();   /* never stack the two drawers */
   $("#detdrawer").classList.add("open");
   $("#detscrim").classList.add("show");
@@ -3185,11 +3374,9 @@ addEventListener("beforeprint", ()=>$$(".rv").forEach(el=>el.classList.add("in")
 
 /* scroll progress + nav spy */
 /* only in-page anchors take part in the spy — the Contact link is an external URL */
-/* #howto is excluded: the note now lives INSIDE #services, so leaving it in the spy would
-   keep "Read this first" lit for the whole catalogue and Services would never light up. */
 const navLinks = $$("nav.mainnav a").filter(a=>{
   const h = a.getAttribute("href")||"";
-  return h.startsWith("#") && h !== "#howto";
+  return h.startsWith("#");
 });
 const secs = navLinks.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
 function onScroll(){
