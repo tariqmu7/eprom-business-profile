@@ -1,7 +1,7 @@
 {
-    "version":  "2026.08.14-2",
+    "version":  "2026.08.14-3",
     "released":  "14 August 2026",
     "file":  "index.html",
-    "notes":  "Update button opens the published page; honest offline message",
-    "published":  "2026-08-14 07:29"
+    "notes":  "Rail chips left-aligned, themed catalogue scrollbar, terminal link retargeted",
+    "published":  "2026-08-14 07:46"
 }

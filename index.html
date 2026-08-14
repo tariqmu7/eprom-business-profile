@@ -11,7 +11,7 @@
      version.json from them, so the published manifest can never
      disagree with the file it describes. Bump BOTH when publishing.
      ============================================================ -->
-<meta name="profile-version" content="2026.08.14-2">
+<meta name="profile-version" content="2026.08.14-3">
 <meta name="profile-released" content="14 August 2026">
 <style>
 /* ============================================================
@@ -303,7 +303,15 @@ html[data-theme="light"] .howlink{color:#397a13}
 .explorer-controls .searchrow{order:1}
 .explorer-controls .resultline{order:2}
 .explorer-controls .chips{order:3; flex:1 1 auto; min-height:0; overflow:auto;
-  overscroll-behavior:contain; align-content:flex-start; padding-right:4px}
+  overscroll-behavior:contain; align-content:flex-start; padding-right:6px;
+  /* the default scrollbar is painted by the OS, so on the dark theme it came out as a
+     bright white bar down the rail. Theme it from the panel tokens instead. */
+  scrollbar-width:thin; scrollbar-color:var(--line-2) transparent}
+.explorer-controls .chips::-webkit-scrollbar{width:8px}
+.explorer-controls .chips::-webkit-scrollbar-track{background:transparent}
+.explorer-controls .chips::-webkit-scrollbar-thumb{background:var(--line-2); border-radius:999px;
+  border:2px solid transparent; background-clip:padding-box}
+.explorer-controls .chips::-webkit-scrollbar-thumb:hover{background:var(--ink-3); background-clip:padding-box}
 /* rail layout: search on its own row, the two buttons sharing the next one */
 .explorer-controls .searchrow{gap:8px}
 .explorer-controls .searchbox{flex:1 1 100%; min-width:0}
@@ -336,9 +344,14 @@ html[data-theme="light"] .howlink{color:#397a13}
 .chips{display:flex; gap:7px; flex-wrap:wrap; margin-top:12px}
 .chip{
   cursor:pointer; border:1px solid var(--line-2); background:var(--panel);
-  color:var(--ink-2); font:600 12.5px/1 inherit; padding:8px 12px; border-radius:999px;
+  color:var(--ink-2); font:600 12.5px/1.35 inherit; padding:8px 12px; border-radius:999px;
   transition:.16s var(--ease); display:inline-flex; align-items:center; gap:7px;
+  /* a <button> is text-align:center by default, so a chip whose label wrapped to two
+     lines (category 6) rendered centred while every one-line chip read left — the list
+     looked ragged. Force left and keep the count vertically centred beside it. */
+  text-align:left;
 }
+.chip .c{flex:0 0 auto}
 .chip:hover{color:var(--ink); border-color:var(--ink-3)}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,var(--blue-2),var(--blue)); border-color:transparent; color:#fff}
 .chip .c{font-size:10.5px; opacity:.75; font-weight:800}
@@ -1126,7 +1139,7 @@ footer img{height:34px; margin-bottom:16px}
       <div class="sector rv"><svg><use href="#i-chem"/></svg><h4>Petrochemicals</h4><p>Operation, rotating and static maintenance, integration studies with refining.</p></div>
       <div class="sector rv"><svg><use href="#i-drop"/></svg><h4>Fertilizer plants</h4><p>Ammonia/urea plant operation, furnace and heater optimisation, reliability.</p></div>
       <div class="sector rv"><svg><use href="#i-tank"/></svg><h4>Terminals &amp; tank farms</h4><p>Stock reconciliation, vessel scheduling, demurrage, de-sludging, loading systems.
-        <a href="#terminal" style="color:var(--green-2); font-weight:700; text-decoration:none">See the full terminal scope ↓</a></p></div>
+        <a href="#cat-terminal" style="color:var(--green-2); font-weight:700; text-decoration:none">See the full terminal scope ↓</a></p></div>
       <div class="sector rv"><svg><use href="#i-bolt"/></svg><h4>Power stations</h4><p>Operation and maintenance of electrical power generation assets.</p></div>
       <div class="sector rv"><svg><use href="#i-solar"/></svg><h4>Solar &amp; renewables</h4><p>Turn-key PV, off-grid, solar irrigation and street lighting; CSP for process heat.</p></div>
       <div class="sector rv"><svg><use href="#i-lab"/></svg><h4>Laboratories</h4><p>Full laboratory outsourcing, ISO 17025 accreditation, LIMS, greenfield lab build.</p></div>
@@ -3192,12 +3205,16 @@ $("#genstamp").textContent = "Generated " + new Date().toLocaleDateString("en-GB
 apply(); renderScope();
 /* run after apply(), which resets an unfiltered catalogue to collapsed */
 openFromHash();
-(function(){
-  /* …#svc-terminal-6.2 — open the category behind the detail drawer */
-  const m = /^#svc-([a-z]+)-[\d.]+$/.exec(location.hash);
+function openCatFromHash(){
+  /* …#svc-terminal-6.2 — open the category behind the detail drawer.
+     …#cat-terminal — a plain jump to a category (the sectors card links this way);
+     without this the reader lands on a collapsed heading and sees nothing. */
+  const m = /^#svc-([a-z]+)-[\d.]+$/.exec(location.hash) || /^#(?:cat-)([a-z]+)$/.exec(location.hash);
   const block = m && document.getElementById("cat-" + m[1]);
   if(block){ setOpen(block, true); syncToggleAll(); }
-})();
+}
+openCatFromHash();
+addEventListener("hashchange", openCatFromHash);
 
 /* ============================================================
    SELF-UPDATE
