@@ -11,8 +11,8 @@
      version.json from them, so the published manifest can never
      disagree with the file it describes. Bump BOTH when publishing.
      ============================================================ -->
-<meta name="profile-version" content="2026.08.14-4">
-<meta name="profile-released" content="14 August 2026">
+<meta name="profile-version" content="2026.08.26-1">
+<meta name="profile-released" content="26 August 2026">
 <style>
 /* ============================================================
    EPROM BUSINESS PROFILE 2026 — single-file, offline, no libraries
@@ -506,7 +506,96 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 /* ---------- prepared packages ---------- */
 /* Every accent here is var(--sec) — #packages sets it to the amber --s-pack, so the whole
    section reads as one colour family exactly like the other chapters. */
-.packgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr)); gap:16px}
+/* The packages read as a SLIDER, not a grid. The track is a real horizontally
+   scroll-snapping element, so touch and trackpad swipe work with no JS at all; the arrows,
+   the dots and the arrow keys only ever drive its scrollLeft. overflow-y must be hidden
+   (a scroll container cannot mix auto-x with visible-y), so the vertical padding is what
+   keeps the cards' hover lift and box-shadow from being clipped. */
+.packgrid{
+  display:flex; align-items:stretch; gap:16px; overflow-x:auto; overflow-y:hidden;
+  scroll-snap-type:x mandatory; scroll-behavior:smooth;
+  /* MUST be positioned: the slider maths reads each card's offsetLeft as its scroll offset,
+     and offsetLeft is measured from the nearest POSITIONED ancestor. Without this the cards
+     report their offset inside <section> (107px in at 1440) and every arrow/dot/key lands on
+     the wrong card. */
+  position:relative;
+  padding:10px 2px 16px; margin:0 -2px; -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;               /* arrows + dots do the driving; the OS bar is noise */
+}
+.packgrid::-webkit-scrollbar{display:none}
+.packgrid:focus-visible{outline:2px solid var(--sec); outline-offset:3px; border-radius:var(--radius)}
+/* ONE package per view. Two-up made every card tall and narrow (~760px at 1440), so a single
+   package did not fit a laptop viewport and the reader scrolled to finish it and scrolled again
+   to reach the control that moves on. One wide card, two-columned inside itself, fits whole. */
+.packgrid > .pack{flex:0 0 100%; scroll-snap-align:start}
+/* The last card's START edge is past the furthest the track can scroll, and mandatory snapping
+   would refuse to rest at the end and bounce back to the previous card — so the last one snaps
+   by its END edge instead, which IS reachable. */
+.packgrid > .pack:last-child{scroll-snap-align:end}
+/* the -46px leaves the next card PEEKING at the right edge — without it the track ends flush
+   and nothing but the controls tells the reader there is more to slide to */
+@media(min-width:900px){ .packgrid > .pack{flex-basis:calc(100% - 46px)} }
+/* ---- the controls ----
+   The arrows sit ON the slider, one each side of the card and vertically centred, so the
+   control the reader wants is beside what they are reading. They used to sit in a row under a
+   760px-tall card, pinned to the far right of a 1212px section with the dots at the far left —
+   a thousand pixels apart and below the fold. Above 1100px they get their own gutter; below
+   that they overlay the card edges, where a thumb expects them. */
+/* THE ARROWS ARE STICKY. A package card is ~630px tall — taller than a laptop viewport once
+   the chapter heading is on screen — so an arrow pinned to the card's midpoint sits below the
+   fold exactly when the reader has finished reading and wants the next one. Each arrow lives in
+   its own grid column and sticks at eye level for the whole length of the card, stopping at the
+   card's ends: "next" is never more than a glance away, at any scroll position.
+   The 2px of side padding pays for the track's own margin:0 -2px (which exists so the focus
+   ring is not clipped) — without it this wrapper overflows by 2px at every width. */
+.packslider{
+  display:grid; grid-template-columns:0 minmax(0,1fr) 0; align-items:start; padding:0 2px;
+}
+.packslider > .packgrid{grid-column:2; grid-row:1}
+.packarrow{
+  position:sticky; grid-row:1; z-index:3;
+  top:clamp(130px, calc(50vh - 27px), calc(100vh - 110px));
+  width:54px; height:54px; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+  border:1px solid color-mix(in srgb,var(--sec) 55%,var(--line));
+  background:var(--panel); color:var(--ink); box-shadow:var(--shadow);
+  transition:background .2s var(--ease), border-color .2s var(--ease), opacity .2s var(--ease);
+}
+/* Narrow screens have no room for gutters, so the columns are 0-wide and the buttons overlay
+   the card's edges (the negative margin on the right one keeps it INSIDE the page — a 54px
+   button in a zero-width column at the right edge would otherwise hang off it). */
+.packarrow.prev{grid-column:1; margin-left:6px}
+.packarrow.next{grid-column:3; margin-left:-60px}
+@media(min-width:1100px){
+  .packslider{grid-template-columns:54px minmax(0,1fr) 54px; column-gap:8px; padding:0}
+  .packarrow.prev, .packarrow.next{margin-left:0}
+}
+/* on a phone the button is unavoidably ON the card, so make it as small as a thumb still allows */
+@media(max-width:760px){
+  .packarrow{width:46px; height:46px}
+  .packarrow svg{width:19px; height:19px}
+  .packarrow.next{margin-left:-52px}
+}
+.packarrow:hover:not(:disabled){background:color-mix(in srgb,var(--sec) 20%,var(--panel)); border-color:var(--sec)}
+.packarrow:focus-visible{outline:2px solid var(--sec); outline-offset:3px}
+.packarrow:disabled{opacity:.28; cursor:default}
+.packarrow svg{width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round}
+.packarrow.prev svg{transform:rotate(180deg)}
+/* Named tabs, not anonymous dots: four bare pills tell the reader nothing about where they
+   would land, so jumping to a package was guesswork. Same [data-pkdot] hooks. */
+.packnav{display:flex; align-items:center; justify-content:center; gap:10px; margin-top:2px; flex-wrap:wrap}
+.packdots{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+.packdot{
+  display:inline-flex; align-items:center; gap:8px; min-height:38px; padding:8px 15px;
+  border-radius:99px; cursor:pointer; font:700 12.5px/1.15 inherit; color:var(--ink-2);
+  border:1px solid color-mix(in srgb,var(--sec) 34%,var(--line));
+  background:color-mix(in srgb,var(--sec) 8%,transparent); transition:.2s var(--ease);
+}
+.packdot i{font-style:normal; font-size:11px; letter-spacing:.1em; opacity:.8}
+.packdot:hover{border-color:var(--sec); color:var(--ink)}
+.packdot:focus-visible{outline:2px solid var(--sec); outline-offset:2px}
+.packdot[aria-current="true"]{background:var(--sec); border-color:var(--sec); color:var(--bg)}
+.packdot[aria-current="true"] i{opacity:.85}
+@media(max-width:700px){ .packdot span{display:none} .packdot{padding:9px 16px} }
 .pack{
   display:flex; flex-direction:column; padding:clamp(18px,2.2vw,26px);
   border:1px solid var(--line); border-top:3px solid var(--sec); border-radius:var(--radius);
@@ -549,6 +638,27 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 }
 .packshow:hover{color:var(--ink)}
 .packshow i{font-style:normal}
+/* The two column wrappers are display:contents everywhere EXCEPT the wide layout below, so
+   narrow screens and print see exactly the flat source order they always saw. */
+.packcol{display:contents}
+@media(min-width:900px){
+  /* A full-width card would otherwise be the SAME height as the old half-width one with longer
+     lines — the height only comes back if the content splits. Head across the top; blurb and
+     highlights left; the category breakdown, the counts and the actions right. */
+  .pack{
+    display:grid; align-content:start;
+    grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+    column-gap:clamp(26px,3vw,44px);
+  }
+  .pack > .packhead{grid-column:1 / -1}
+  .packcol{display:flex; flex-direction:column}
+  /* the dashed rule that separated the breakdown when the card was one column becomes the
+     rule BETWEEN the columns */
+  .packcol.b{border-left:1px dashed var(--line-2); padding-left:clamp(20px,2.2vw,30px)}
+  .packcol.b .packwhat{border-top:0; padding-top:0; margin-top:15px}
+  .packacts{flex-direction:row; align-items:center; flex-wrap:wrap; gap:12px}
+  .packbtn{width:auto; flex:1 1 230px}
+}
 
 /* ---------- sectors ---------- */
 .sectors{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px}
@@ -873,7 +983,7 @@ footer img{height:34px; margin-bottom:16px}
     --s-intro:#0d5fae; --s-life:#08776c; --s-pack:#8a5705;
     --s-serv:#397a13;  --s-sect:#6a41c4; --s-term:#0a7ba6; --s-cred:#8a6a0c}
   body{background:#fff; color:#000; font-size:10.5pt}
-  header.top,.explorer-controls,.scopefab,.drawer,.scrim,.toast,.herocta,.addbtn,.kbd,.catadd,.detdrawer,.detscrim,.morebtn,.packacts,.upd,.updlink,.helpmodal,.helpscrim{display:none !important}
+  header.top,.explorer-controls,.scopefab,.drawer,.scrim,.toast,.herocta,.addbtn,.kbd,.catadd,.detdrawer,.detscrim,.morebtn,.packacts,.packnav,.packarrow,.slidehint,.upd,.updlink,.helpmodal,.helpscrim{display:none !important}
   .hero{background:#03172c !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; padding:24pt 0 0}
   .stats{grid-template-columns:repeat(6,1fr)}
   /* the per-section accent tint is a screen device — on paper keep only the hairline rule */
@@ -889,6 +999,15 @@ footer img{height:34px; margin-bottom:16px}
   .catblock[data-open="false"] .cathead{margin-bottom:22px}
   .catchev{display:none !important}
   .modgrid{grid-template-columns:1fr 1fr}
+  /* the slider is a screen device — paper always carries every package, laid out flat */
+  .packgrid{display:grid !important; grid-template-columns:1fr 1fr; gap:12px;
+    overflow:visible !important; padding:0; margin:0}
+  .packgrid > .pack{flex:none}
+  /* paper is narrower than 900px so the two-column card rules should not apply anyway —
+     say it out loud rather than trust the page width */
+  .packslider{display:block !important; padding:0 !important}
+  .pack{display:flex !important}
+  .packcol{display:contents !important}
   .life{min-width:0; grid-template-columns:repeat(3,1fr)}
   .rv{opacity:1 !important; transform:none !important}
   a[href^="http"]::after{content:" (" attr(href) ")"; font-size:8pt; color:#5b7186}
@@ -1090,12 +1209,23 @@ footer img{height:34px; margin-bottom:16px}
   <div class="wrap">
     <div class="sechead rv">
       <p class="eyebrow">03 &mdash; Prepared packages</p>
-      <h2>Three scopes we deliver as a whole.</h2>
+      <h2 id="packh2">Four scopes we deliver as a whole.</h2>
       <p>Most clients buy a capability, not a single module. Each package below is the set of
       catalogue modules we most often deliver together on one contract &mdash; add it to your scope
-      sheet in one click, then tune it module by module in the catalogue underneath.</p>
+      sheet in one click, then tune it module by module in the catalogue underneath.
+      <span class="slidehint"><b>One package at a time</b> &mdash; use the arrows either side of the
+      card, the named tabs underneath it, the left/right arrow keys, or a swipe.</span></p>
     </div>
-    <div class="packgrid" id="packgrid"></div>
+    <div class="packslider">
+      <button class="packarrow prev" id="packprev" type="button" aria-label="Previous package"><svg><use href="#i-arrow"/></svg></button>
+      <div class="packgrid" id="packgrid" tabindex="0" role="group"
+           aria-roledescription="carousel"
+           aria-label="Prepared packages &mdash; slide with the left and right arrow keys"></div>
+      <button class="packarrow next" id="packnext" type="button" aria-label="Next package"><svg><use href="#i-arrow"/></svg></button>
+    </div>
+    <div class="packnav">
+      <div class="packdots" id="packdots"></div>
+    </div>
   </div>
 </section>
 
@@ -1350,11 +1480,12 @@ footer img{height:34px; margin-bottom:16px}
           <b>Click any stage to filter the catalogue</b> down to what a client at that stage
           actually buys.</span></li>
         <li><span class="ch">03 &mdash; Prepared packages</span>
-          <span class="cd">Three ready-made bundles &mdash; <b>Integrated Terminal Services</b>,
-          <b>Operations &amp; Maintenance</b> and <b>Asset Integrity</b>. Each card says how many
-          modules it contains, adds them all to the scope sheet in one click, or shows just those
-          modules in the catalogue. Packages deliberately overlap on a few shared
-          modules.</span></li>
+          <span class="cd">Four ready-made bundles &mdash; <b>Integrated Terminal Services</b>,
+          <b>Operations &amp; Maintenance</b>, <b>Asset Integrity</b> and <b>Utility Scope</b>.
+          They sit in a <b>slider</b> that shows one package at a time &mdash; use the arrows either
+          side of the card, the named tabs underneath it, the left/right arrow keys or a swipe. Each card says how many modules it contains, adds them all
+          to the scope sheet in one click, or shows just those modules in the catalogue. Packages
+          deliberately overlap on a few shared modules.</span></li>
         <li><span class="ch">04 &mdash; The complete service catalogue</span>
           <span class="cd">The heart of the document: every category and module with its key
           deliverables. Categories start <b>collapsed</b> so the chapter reads as a 12-line index
@@ -2964,6 +3095,17 @@ const PACKS = [
       "<b>The evidence behind it</b> — laboratory analytics, process safety studies, and as-built 3D models and drawings that keep the record true."
     ],
     codes:["3.1","3.2","3.3","3.4","2.7","10.1","11.5","4.5","9.1"]
+  },
+  {
+    id:"utility", icon:"i-bolt", n:"Package 04",
+    t:"Utility Scope",
+    d:"Own the utilities block behind the process — power, steam, water and air — and run it as one measured, maintained and audited system instead of a set of loose contracts.",
+    pts:[
+      "<b>Generation and distribution</b> — operation and maintenance of electrical power stations, switchgear, motors and generators, with on-site PV where the site's own load profile justifies it.",
+      "<b>The rotating and thermal plant</b> — boilers, fired heaters and steam systems, turbines, pumps, compressors, fans and blowers, with the instrumentation, control and SCADA layer behind them.",
+      "<b>Measured, not assumed</b> — facility energy audits and utility benchmarking, waste-heat recovery, boiler, steam and cooling-water chemistry, and HSEQ assurance across the whole block."
+    ],
+    codes:["8.1","8.2","1.4","2.2","2.3","2.4","2.7","7.3","5.1","5.2","5.4","11.5","9.1"]
   }
 ];
 /* module codes are unique across the catalogue, so a package can name codes and the key is derived */
@@ -2990,15 +3132,19 @@ $("#packgrid").innerHTML = PACKS.map(p=>{
         <h3>${p.t}</h3>
       </div>
     </div>
-    <p class="packd">${p.d}</p>
-    <ul class="packpts">${p.pts.map(x=>`<li>${x}</li>`).join("")}</ul>
-    <ul class="packwhat">${packBreakdown(p)}</ul>
-    <div class="packmeta"><b>${keys.length}</b> modules · ${cats} categories</div>
-    <div class="packacts">
-      <button class="packbtn" data-packadd="${p.id}" data-state="off">
-        <svg><use href="#i-check"/></svg><span>Add all ${keys.length} to scope sheet</span>
-      </button>
-      <button class="packshow" data-packshow="${p.id}">Show these ${keys.length} modules in the catalogue <i>&rsaquo;</i></button>
+    <div class="packcol a">
+      <p class="packd">${p.d}</p>
+      <ul class="packpts">${p.pts.map(x=>`<li>${x}</li>`).join("")}</ul>
+    </div>
+    <div class="packcol b">
+      <ul class="packwhat">${packBreakdown(p)}</ul>
+      <div class="packmeta"><b>${keys.length}</b> modules · ${cats} categories</div>
+      <div class="packacts">
+        <button class="packbtn" data-packadd="${p.id}" data-state="off">
+          <svg><use href="#i-check"/></svg><span>Add all ${keys.length} to scope sheet</span>
+        </button>
+        <button class="packshow" data-packshow="${p.id}">Show these ${keys.length} modules in the catalogue <i>&rsaquo;</i></button>
+      </div>
     </div>
   </article>`;
 }).join("");
@@ -3031,6 +3177,90 @@ function syncPacks(){
     $("span",b).textContent = (full ? "Remove all " : "Add all ") + keys.length + (full ? " from scope sheet" : " to scope sheet");
   });
 }
+
+/* the heading counts the packages, so it can never contradict PACKS */
+$("#packh2").textContent =
+  (["","One","Two","Three","Four","Five","Six","Seven","Eight"][PACKS.length] || PACKS.length) +
+  " scopes we deliver as a whole.";
+
+/* ---------- packages slider ----------
+   Every control reads the track's scrollLeft back rather than keeping an index of its own, so a
+   swipe, an arrow, a dot and a keypress can never disagree about which card is current. */
+const pkTrack = $("#packgrid"), pkPrev = $("#packprev"), pkNext = $("#packnext"), pkDots = $("#packdots");
+/* NOTE: plain() is declared further down this script, so it is in its TDZ here — the label uses
+   the raw title, whose &amp; renders correctly inside an attribute anyway. */
+pkDots.innerHTML = PACKS.map((p,i)=>
+  `<button class="packdot" type="button" data-pkdot="${i}" aria-label="Go to ${p.t}" aria-current="${i===0}">` +
+  `<i>${p.n.replace(/^Package\s*/,"")}</i><span>${p.t}</span></button>`).join("");
+function pkCards(){ return $$(".pack", pkTrack); }
+/* the scroll offset of card i, measured from the FIRST card so the track's own padding and
+   border drop out of the sum (the track is position:relative, so offsetLeft is measured
+   inside it — see the CSS note) */
+function pkOffset(el){ const c = pkCards(); return c.length ? el.offsetLeft - c[0].offsetLeft : 0; }
+/* Where the track ACTUALLY ends up if you ask for card i — the last cards all clamp to the same
+   end position once more than one card fits the view. Every control uses this one function, so
+   the arrows, the dots and the keys can never point somewhere the track cannot go. */
+function pkTarget(i){
+  const c = pkCards(); if(!c.length) return 0;
+  i = Math.max(0, Math.min(c.length-1, i));
+  return Math.min(pkOffset(c[i]), pkTrack.scrollWidth - pkTrack.clientWidth);
+}
+function pkIndex(){
+  let best = 0, d = Infinity;
+  /* <= not < : when the last cards share the end position, the HIGHEST index wins, because
+     that card is the one the reader can actually see fully at that scroll position */
+  pkCards().forEach((el,i)=>{ const dist = Math.abs(pkTarget(i) - pkTrack.scrollLeft); if(dist <= d){ d = dist; best = i; } });
+  return best;
+}
+function pkGo(i){
+  if(!pkCards().length) return;
+  const left = pkTarget(i);
+  /* A smooth scroll's duration grows with the distance, and one card per view means tab 04 ->
+     tab 01 is three whole cards — measured well over a second of the reader watching packages
+     fly past. Anything further than one card away lands at once; neighbours still glide. */
+  const far = Math.abs(left - pkTrack.scrollLeft) > pkTrack.clientWidth * 1.2;
+  pkTrack.scrollTo({left, behavior: far ? "instant" : "smooth"});
+  if(far) pkSync();
+}
+/* Arrows and keys step by POSITION, not by index: at the far end the last cards share one
+   target, so stepping the index back by one would ask the track to stay exactly where it is. */
+function pkStep(dir){
+  const t = pkCards().map((_,i)=>pkTarget(i)), x = pkTrack.scrollLeft;
+  if(dir > 0){ const i = t.findIndex(v => v > x + 2); if(i >= 0) pkGo(i); }
+  else { let i = -1; t.forEach((v,j)=>{ if(v < x - 2) i = j; }); if(i >= 0) pkGo(i); }
+}
+function pkSync(){
+  const i = pkIndex(), max = pkTrack.scrollWidth - pkTrack.clientWidth;
+  $$("[data-pkdot]", pkDots).forEach(d=>d.setAttribute("aria-current", String(Number(d.dataset.pkdot) === i)));
+  pkPrev.disabled = pkTrack.scrollLeft <= 2;
+  pkNext.disabled = pkTrack.scrollLeft >= max - 2;
+  /* a card parked outside the track never intersects the viewport, so the reveal observer would
+     leave it at opacity 0 — the moment the slider is touched, show them all */
+  pkCards().forEach(el=>el.classList.add("in"));
+}
+/* Moving the track sideways is only half the job — the reader also has to SEE the package they
+   just asked for. One card is ~460px, comfortably shorter than a laptop viewport, so whenever
+   any of it is off screen the page is moved to put the whole of it in view. A card too tall for
+   the viewport (phones) is aligned by its top instead. Only the explicit controls do this;
+   a swipe or a trackpad scroll must never yank the page. */
+function pkReveal(){
+  const r = pkTrack.getBoundingClientRect(), head = 84, nav = 52;
+  const whole = r.height + nav <= innerHeight - head;
+  const settled = whole ? (r.top >= head && r.bottom + nav <= innerHeight)
+                        : (r.top >= head && r.top < innerHeight / 2);
+  if(!settled) scrollBy({top: r.top - head, behavior:"smooth"});
+}
+pkPrev.addEventListener("click", ()=>{ pkStep(-1); pkReveal(); });
+pkNext.addEventListener("click", ()=>{ pkStep(1); pkReveal(); });
+pkDots.addEventListener("click", e=>{ const d = e.target.closest("[data-pkdot]"); if(d){ pkGo(Number(d.dataset.pkdot)); pkReveal(); } });
+pkTrack.addEventListener("scroll", ()=>{ clearTimeout(pkTrack._pkt); pkTrack._pkt = setTimeout(pkSync, 90); }, {passive:true});
+pkTrack.addEventListener("keydown", e=>{
+  if(e.key === "ArrowRight"){ e.preventDefault(); pkStep(1); }
+  else if(e.key === "ArrowLeft"){ e.preventDefault(); pkStep(-1); }
+});
+addEventListener("resize", pkSync);
+addEventListener("beforeprint", ()=>pkCards().forEach(el=>el.classList.add("in")));
+pkSync();
 
 function openDrawer(){ if(helpOpen()) closeHelp(); $("#drawer").classList.add("open"); $("#scrim").classList.add("show"); }
 function closeDrawer(){ $("#drawer").classList.remove("open"); $("#scrim").classList.remove("show"); renderScope(); }
