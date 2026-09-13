@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EPROM — Business Profile 2026 | Fields of Services</title>
-<meta name="description" content="EPROM (Egyptian Projects Operation &amp; Maintenance) business profile 2026 — 12 service categories, 49 service modules across the oil, gas, petrochemical and power value chain.">
+<meta name="description" content="EPROM (Egyptian Projects Operation &amp; Maintenance) business profile 2026 — 12 service categories, 50 service modules across the oil, gas, petrochemical and power value chain.">
 <!-- ============================================================
      SELF-UPDATE STAMP — this is the SINGLE SOURCE OF TRUTH for the
      document version. publish.ps1 reads these two tags and writes
      version.json from them, so the published manifest can never
      disagree with the file it describes. Bump BOTH when publishing.
      ============================================================ -->
-<meta name="profile-version" content="2026.08.26-1">
-<meta name="profile-released" content="26 August 2026">
+<meta name="profile-version" content="2026.09.13-1">
+<meta name="profile-released" content="13 September 2026">
 <style>
 /* ============================================================
    EPROM BUSINESS PROFILE 2026 — single-file, offline, no libraries
@@ -1120,7 +1120,7 @@ footer img{height:34px; margin-bottom:16px}
     </p>
     <ul class="herometa">
       <li><b id="heroCats">12</b> service categories</li>
-      <li><b id="heroMods">49</b> service modules</li>
+      <li><b id="heroMods">50</b> service modules</li>
     </ul>
     <div class="herocta">
       <a class="btn btn-primary" href="#services"><svg><use href="#i-list"/></svg> Explore the service catalogue</a>
@@ -1247,7 +1247,7 @@ footer img{height:34px; margin-bottom:16px}
         <div class="searchrow">
           <div class="searchbox">
             <svg><use href="#i-search"/></svg>
-            <input id="q" type="search" placeholder="Search 49 modules — HAZOP, PAUT, LIMS…" autocomplete="off">
+            <input id="q" type="search" placeholder="Search 50 modules — HAZOP, PAUT, LIMS…" autocomplete="off">
             <span class="kbd">/</span>
           </div>
           <button class="iconbtn selectall" id="selectall" title="Add every module currently shown to the scope sheet"><svg><use href="#i-check"/></svg><span id="selectalltxt">Select all shown</span></button>
@@ -1256,7 +1256,7 @@ footer img{height:34px; margin-bottom:16px}
         </div>
         <div class="chips" id="chips"></div>
         <div class="resultline">
-          <span><b id="rescount">49</b> modules shown across <b id="rescats">12</b> categories</span>
+          <span><b id="rescount">50</b> modules shown across <b id="rescats">12</b> categories</span>
           <span class="selecthint">Filter to the categories you need, then <b>Select all shown</b> → the scope sheet prints just those modules.</span>
           <button class="linkbtn" id="clearfilters" hidden>Clear filters</button>
         </div>
@@ -1284,7 +1284,8 @@ footer img{height:34px; margin-bottom:16px}
     </div>
     <div class="sectors">
       <div class="sector rv"><svg><use href="#i-plant"/></svg><h4>Oil refineries</h4><p>Full O&amp;M, turnarounds, catalyst handling, crude assay and product certification.</p></div>
-      <div class="sector rv"><svg><use href="#i-gas"/></svg><h4>Gas plants — onshore &amp; offshore</h4><p>Upstream processing, pre-commissioning, start-up and global maintenance contracts.</p></div>
+      <div class="sector rv"><svg><use href="#i-gas"/></svg><h4>Gas plants — onshore &amp; offshore</h4><p>Gas processing and treatment, live at Melieha (raised from 20 to 30 MMSCFD); start-up and global maintenance.
+        <a href="#svc-operations-1.5" style="color:var(--green-2); font-weight:700; text-decoration:none">See the gas processing scope ↓</a></p></div>
       <div class="sector rv"><svg><use href="#i-chem"/></svg><h4>Petrochemicals</h4><p>Operation, rotating and static maintenance, integration studies with refining.</p></div>
       <div class="sector rv"><svg><use href="#i-drop"/></svg><h4>Fertilizer plants</h4><p>Ammonia/urea plant operation, furnace and heater optimisation, reliability.</p></div>
       <div class="sector rv"><svg><use href="#i-tank"/></svg><h4>Terminals &amp; tank farms</h4><p>Stock reconciliation, vessel scheduling, demurrage, de-sludging, loading systems.
@@ -1459,7 +1460,7 @@ footer img{height:34px; margin-bottom:16px}
 
     <div class="helpsec">
       <h4>What this document is</h4>
-      <p>One self-contained file holding the whole EPROM offering: <b>12 categories, 49 service
+      <p>One self-contained file holding the whole EPROM offering: <b>12 categories, 50 service
       modules</b>, as issued in the EPROM Services List 2026. It is interactive &mdash; you search it,
       filter it, open any module for its full scope, and tick modules to build a
       <b>scope sheet</b> for one specific client, which you then copy, print or e-mail.
@@ -1544,7 +1545,7 @@ footer img{height:34px; margin-bottom:16px}
           items and notes &mdash; on the clipboard, ready to paste into a proposal or a
           message.</li>
         <li><b>Print this scope sheet</b> produces a clean client-ready PDF of the selection only.
-          Select all 49 and print, and you get the complete detailed catalogue.</li>
+          Select all 50 and print, and you get the complete detailed catalogue.</li>
         <li><b>E-mail</b> copies the same full text to the clipboard and opens a short message with a
           marked place to paste it &mdash; mail links are length-limited, so the detail travels on the
           clipboard, never truncated.</li>
@@ -1707,6 +1708,33 @@ const CATS = [
       ]}
     ],
     note:{label:"Project-specific by design", text:"Each engagement is configured around the asset, operating model, authority interfaces, contractual responsibilities and performance priorities."}
+   }},
+    {c:"1.5", t:"Gas Processing & Treatment",
+   d:"End-to-end O&amp;M of natural-gas plants — sweetening, dehydration, NGL extraction, dew-point control and compression — for maximum uptime at controlled cost.",
+   tags:["Gas plants","Sweetening &amp; CO₂ removal","Dehydration","NGL &amp; condensate","Dew-point control","Compression &amp; SCADA"],
+   detail:{
+    blocks:[
+     {title:"End-to-end O&amp;M of gas processing facilities",
+      items:[
+       "Full operational management and maintenance execution of natural-gas processing plants, including remote desert sites.",
+       "Asset integrity and safety compliance managed as part of daily operation.",
+       "Targeted plant upgrades that lift processing capacity and recover more high-value product.",
+       "Plant <b>uptime maximised</b> while operating and maintenance cost stays under control."
+      ]},
+     {title:"Process units we operate, optimise and maintain",
+      items:[
+       "<b>Gas sweetening and decarbonization</b> — acid-gas (H₂S / CO₂) removal to sales-gas specification.",
+       "<b>Dehydration</b> of the gas stream ahead of transport.",
+       "<b>NGL extraction</b> and <b>condensate recovery</b>.",
+       "<b>Hydrocarbon dew-point control</b>.",
+       "<b>Compression and transport systems</b>, integrated with <b>SCADA</b>."
+      ]},
+     {title:"Where we deliver it",
+      items:[
+       "<b>Western Desert — Melieha field:</b> end-to-end O&amp;M of the natural-gas processing facilities for Agiba Petroleum Company, with targeted upgrades that raised processing capacity from <b>20 to 30 MMSCFD</b> alongside high-value condensate recovery.",
+       "<b>Eastern Desert &amp; Sinai — Abu Rudeis and strategic sites:</b> full operational management, maintenance execution, asset integrity and safety compliance for remote gas plants and strategic oil / gas storage terminals."
+      ]}
+    ]
    }}
  ]
 },
@@ -2816,6 +2844,12 @@ document.addEventListener("click", e=>{
   const block = document.getElementById(a.getAttribute("href").slice(1));
   if(block){ setOpen(block, true); syncToggleAll(); }
 });
+/* an in-page #svc-<cat>-<code> link (e.g. the gas-plants sector card) opens that module's drawer */
+document.addEventListener("click", e=>{
+  const a = e.target.closest('a[href^="#svc-"]'); if(!a) return;
+  const m = /^#svc-([a-z]+)-([\d.]+)$/.exec(a.getAttribute("href")); if(!m) return;
+  e.preventDefault(); renderDetail(m[1] + "|" + m[2]);
+});
 
 /* ============================================================
    SEARCH + FILTER
@@ -3083,7 +3117,7 @@ const PACKS = [
       "<b>The full maintenance stack</b> — global, mechanical, electrical and I&amp;C maintenance, turnarounds, workshops and fabrication, planning and scheduling, RBM, RCM, RCFA and CMMS.",
       "<b>Governed operation</b> — process safety management, HSEQ assurance and on-the-job development of the client's own crews so the capability stays after we leave."
     ],
-    codes:["1.1","1.2","1.3","1.4","2.1","2.2","2.3","2.4","2.5","2.6","2.7","7.3","9.1","10.1","12.4"]
+    codes:["1.1","1.2","1.3","1.4","1.5","2.1","2.2","2.3","2.4","2.5","2.6","2.7","7.3","9.1","10.1","12.4"]
   },
   {
     id:"asset-integrity", icon:"i-insp", n:"Package 03",

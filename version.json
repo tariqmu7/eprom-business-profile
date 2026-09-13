@@ -1,7 +1,7 @@
 {
-    "version":  "2026.08.26-1",
-    "released":  "26 August 2026",
+    "version":  "2026.09.13-1",
+    "released":  "13 September 2026",
     "file":  "index.html",
-    "notes":  "New Package 04 \u0027Utility Scope\u0027 (13 modules) and the packages section reworked into a one-card-per-view slider with sticky arrow buttons and named tabs",
-    "published":  "2026-08-26 11:58"
+    "notes":  "New service 1.5 Gas Processing \u0026 Treatment (Operations Management): gas plant O\u0026M, sweetening, dehydration, NGL, dew-point control, compression/SCADA, with Melieha (20 to 30 MMSCFD) and Abu Rudeis track record; added to Package 02; gas-plants sector card links to it",
+    "published":  "2026-09-13 19:26"
 }
