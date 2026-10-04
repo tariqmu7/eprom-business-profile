@@ -11,7 +11,7 @@
      version.json from them, so the published manifest can never
      disagree with the file it describes. Bump BOTH when publishing.
      ============================================================ -->
-<meta name="profile-version" content="2026.10.05-1">
+<meta name="profile-version" content="2026.10.05-2">
 <meta name="profile-released" content="5 October 2026">
 <style>
 /* ============================================================
@@ -86,7 +86,7 @@ header.top{
 html[data-theme="dark"] .brand .logo-colour{display:none}
 html[data-theme="light"] .brand .logo-white{display:none}
 @media print{ .brand .logo-white{display:none} .brand .logo-colour{display:block} }
-.brand .bt{font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); font-weight:700; border-left:1px solid var(--line-2); padding-left:12px}
+.brand .bt{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); font-weight:700; border-left:1px solid var(--line-2); padding-left:12px}
 /* the nav WRAPS at every width now that there are 9 items — a wrapped second row stays inside
    the 70px bar, whereas a non-wrapping nav clipped its last items against the 1280px .wrap */
 nav.mainnav{display:flex; flex-wrap:wrap; justify-content:flex-end; align-content:center;
@@ -167,7 +167,7 @@ html[data-theme="light"] .hero{background:#062b4e}
 .stat{padding:22px 18px 30px; border-right:1px solid rgba(255,255,255,.09)}
 .stat:last-child{border-right:0}
 .stat b{display:block; font-size:clamp(22px,2.6vw,34px); font-weight:800; letter-spacing:-.03em; color:#fff}
-.stat span{display:block; font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:#93b0cc; margin-top:6px}
+.stat span{display:block; font-size:12px; letter-spacing:.13em; text-transform:uppercase; color:#93b0cc; margin-top:6px}
 
 /* ---------- generic section ---------- */
 /* Every section carries its own accent in --sec. One hue per chapter, used for the
@@ -242,7 +242,7 @@ section .eyebrow{color:var(--sec)}
   font:800 12px/1 inherit; letter-spacing:.14em; text-transform:uppercase;
   color:var(--accent); margin-bottom:10px;
 }
-.helpsec p{font-size:14.2px; color:var(--ink-2); line-height:1.65}
+.helpsec p{font-size:14px; color:var(--ink-2); line-height:1.65}
 .helplist{margin:0; padding-left:18px; display:grid; gap:9px; font-size:14px;
   color:var(--ink-2); line-height:1.6}
 .helplist li::marker{color:var(--green)}
@@ -258,10 +258,10 @@ section .eyebrow{color:var(--sec)}
   border:1px solid var(--line); border-radius:12px; background:var(--panel-2); padding:12px 14px;
 }
 .helpchapters .ch{font:800 12px/1 inherit; letter-spacing:.12em; text-transform:uppercase; color:var(--green-2)}
-.helpchapters .cd{font-size:13.8px; color:var(--ink-2); line-height:1.6}
+.helpchapters .cd{font-size:13.5px; color:var(--ink-2); line-height:1.6}
 .helpchapters .cd b{color:var(--ink); font-weight:650}
 .helpkeys{display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
-.helpkey{display:flex; align-items:center; gap:10px; font-size:13.6px; color:var(--ink-2)}
+.helpkey{display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-2)}
 .helpkey .kb{
   flex:0 0 auto; min-width:30px; text-align:center; padding:3px 8px; border-radius:7px;
   border:1px solid var(--line-2); background:var(--panel-2); color:var(--ink);
@@ -275,7 +275,7 @@ html[data-theme="light"] .helplink,
 html[data-theme="light"] .helpbtn.lit{color:#397a13}
 .helpfoot{padding:14px 20px; border-top:1px solid var(--line); display:flex; gap:10px;
   align-items:center; justify-content:space-between; flex-wrap:wrap}
-.helpfoot .hf{font-size:12.6px; color:var(--ink-3)}
+.helpfoot .hf{font-size:12.5px; color:var(--ink-3)}
 @media(max-width:640px){
   .helpmodal{width:calc(100% - 16px); max-height:92vh}
   .helpbody{padding:16px}
@@ -319,7 +319,7 @@ html[data-theme="light"] .helpbtn.lit{color:#397a13}
 .lifecard p{font-size:13px; color:var(--ink-2)}
 .lifecard .cats{margin-top:auto; padding-top:12px; display:flex; flex-wrap:wrap; gap:5px}
 .lifecard .cats i{
-  font-style:normal; font-size:11px; font-weight:800; width:22px; height:22px;
+  font-style:normal; font-size:12px; font-weight:800; width:22px; height:22px;
   display:grid; place-items:center; border-radius:6px;
   background:linear-gradient(135deg,var(--blue-2),var(--blue)); color:#fff;
 }
@@ -395,7 +395,7 @@ html[data-theme="light"] .helpbtn.lit{color:#397a13}
 .chip .c{flex:0 0 auto}
 .chip:hover{color:var(--ink); border-color:var(--ink-3)}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,var(--blue-2),var(--blue)); border-color:transparent; color:#fff}
-.chip .c{font-size:10.5px; opacity:.75; font-weight:800}
+.chip .c{font-size:12px; opacity:.75; font-weight:800}
 .resultline{display:flex; align-items:center; gap:12px; margin-top:12px; font-size:13px; color:var(--ink-3)}
 .resultline b{color:var(--ink)}
 .resultline .selecthint{margin-left:auto; text-align:right; font-size:12.5px; color:var(--ink-3)}
@@ -479,7 +479,7 @@ h1,h2,h3,h4,h5,p,li,.mod .d,.vpc p,.cathead p{overflow-wrap:break-word}
 .mod .d{font-size:14px; color:var(--ink-2)}
 .mod ul{margin:2px 0 0; padding-left:18px; font-size:13.5px; color:var(--ink-2); display:grid; gap:5px}
 .mod .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:10px}
-.tag{font-size:11px; font-weight:600; letter-spacing:.02em; padding:4px 8px; border-radius:6px;
+.tag{font-size:12px; font-weight:600; letter-spacing:.02em; padding:4px 8px; border-radius:6px;
   background:var(--panel-2); border:1px solid var(--line); color:var(--ink-3)}
 .addbtn{
   position:absolute; top:14px; right:14px; width:28px; height:28px; border-radius:8px; cursor:pointer;
@@ -594,7 +594,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
   border:1px solid color-mix(in srgb,var(--sec) 34%,var(--line));
   background:color-mix(in srgb,var(--sec) 8%,transparent); transition:.2s var(--ease);
 }
-.packdot i{font-style:normal; font-size:11px; letter-spacing:.1em; opacity:.8}
+.packdot i{font-style:normal; font-size:12px; letter-spacing:.1em; opacity:.8}
 .packdot:hover{border-color:var(--sec); color:var(--ink)}
 .packdot:focus-visible{outline:2px solid var(--sec); outline-offset:2px}
 .packdot[aria-current="true"]{background:var(--sec); border-color:var(--sec); color:var(--bg)}
@@ -621,7 +621,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 .packpts li::before{content:""; position:absolute; left:0; top:6px; width:9px; height:9px; border-radius:3px;
   background:color-mix(in srgb,var(--sec) 72%,transparent)}
 .packpts li b{color:var(--ink)}
-.packwhat{margin-top:15px; padding-top:13px; border-top:1px dashed var(--line-2); font-size:12.5px; color:var(--ink-2)}
+.packwhat{margin-top:15px; padding-top:13px; border-top:1px dashed var(--line-2); font-size:13px; color:var(--ink-2)}
 .packwhat li{margin-top:4px}
 .packwhat li b{color:var(--ink)}
 .packmeta{margin-top:auto; padding-top:16px; font-size:12px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-2)}
@@ -666,6 +666,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 
 /* ---------- sectors ---------- */
 .sectors{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px}
+@media(min-width:640px){ .sectors{grid-template-columns:repeat(3,1fr)} }
 .sector{padding:20px 18px; border-radius:var(--radius); border:1px solid var(--line); background:var(--panel); transition:.2s var(--ease)}
 .sector:hover{border-color:var(--green); transform:translateY(-3px)}
 .sector svg{width:26px; height:26px; stroke:var(--green-2); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
@@ -692,7 +693,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 .stdwrap{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
 .std{font-size:12.5px; font-weight:700; padding:8px 12px; border-radius:9px; border:1px solid var(--line-2);
   background:var(--panel); color:var(--ink-2)}
-.std small{display:block; font-weight:600; font-size:10.5px; color:var(--ink-3); letter-spacing:.06em; margin-top:2px}
+.std small{display:block; font-weight:600; font-size:12px; color:var(--ink-3); letter-spacing:.06em; margin-top:2px}
 
 /* ---------- scope drawer ---------- */
 .scopefab{
@@ -717,13 +718,13 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 .drawerfoot{padding:16px 20px; border-top:1px solid var(--line); display:grid; gap:8px}
 .scopepk{border:1px solid var(--line); border-left:3px solid var(--s-pack); border-radius:8px;
   padding:9px 12px; margin:0 0 4px; background:rgba(255,255,255,.03)}
-.scopepk b{display:block; color:var(--s-pack); font-size:11.5px; letter-spacing:.1em;
+.scopepk b{display:block; color:var(--s-pack); font-size:12px; letter-spacing:.1em;
   text-transform:uppercase; margin-bottom:4px}
-.scopepk span{display:block; font-size:12.5px; line-height:1.5; color:var(--ink-2)}
+.scopepk span{display:block; font-size:13px; line-height:1.5; color:var(--ink-2)}
 .si{display:flex; gap:10px; align-items:flex-start; padding:11px 0; border-bottom:1px dashed var(--line)}
 .si .c{font:800 11.5px/1.5 inherit; color:var(--green-2); flex:0 0 34px}
 .si .t{flex:1; font-size:14px}
-.si .t small{display:block; color:var(--ink-3); font-size:11.5px; margin-top:3px}
+.si .t small{display:block; color:var(--ink-3); font-size:12px; margin-top:3px}
 .si button{background:none; border:0; color:var(--ink-3); cursor:pointer; font-size:17px; line-height:1}
 .si button:hover{color:#ff8080}
 .scrim{position:fixed; inset:0; background:rgba(2,10,20,.6); backdrop-filter:blur(2px); z-index:80; opacity:0; pointer-events:none; transition:.3s}
@@ -750,7 +751,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
   box-shadow:0 0 0 0 rgba(107,186,61,.6); animation:updpulse 2.2s infinite}
 @keyframes updpulse{70%{box-shadow:0 0 0 9px rgba(107,186,61,0)}100%{box-shadow:0 0 0 0 rgba(107,186,61,0)}}
 .upd h4{font-size:15px; margin-bottom:5px}
-.upd p{font-size:12.5px; line-height:1.55; color:var(--ink-2); margin-bottom:12px}
+.upd p{font-size:13px; line-height:1.55; color:var(--ink-2); margin-bottom:12px}
 .upd p b{color:var(--ink)}
 .upd .updacts{display:flex; flex-wrap:wrap; gap:8px}
 .upd .updacts button{font:700 12.5px/1 inherit; padding:9px 13px; border-radius:9px; cursor:pointer;
@@ -790,7 +791,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
 .detbody .det-section-head{font:800 12px/1 inherit; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px}
 .detbody .det-block{border:1px solid var(--line); border-radius:12px; background:var(--panel-2); padding:14px 16px; margin-bottom:10px}
 .detbody .det-block h4{font-size:15px; display:flex; align-items:baseline; gap:9px; margin-bottom:10px}
-.detbody .det-block h4 em{font-style:normal; font-size:11.5px; font-weight:800; color:var(--ink-3); letter-spacing:.1em}
+.detbody .det-block h4 em{font-style:normal; font-size:12px; font-weight:800; color:var(--ink-3); letter-spacing:.1em}
 .detbody .det-block ul{margin:0; padding-left:17px; display:grid; gap:7px; font-size:13.5px; color:var(--ink-2); line-height:1.55}
 .detbody .det-block ul li::marker{color:var(--green)}
 .detbody .det-block ul b{color:var(--ink); font-weight:650}
@@ -799,7 +800,7 @@ mark{background:rgba(107,186,61,.32); color:inherit; border-radius:3px; padding:
   border:1px solid rgba(107,186,61,.42); background:color-mix(in srgb,var(--green) 8%,transparent);
 }
 .det-note > b{display:block; font:800 11.5px/1 inherit; letter-spacing:.16em; color:var(--green-2); margin-bottom:8px}
-.det-note p{font-size:13.6px; color:var(--ink-2); line-height:1.55}
+.det-note p{font-size:13.5px; color:var(--ink-2); line-height:1.55}
 .det-note p b{color:var(--ink); font-weight:700}
 .det-note.blue{border-color:rgba(47,134,216,.42); background:color-mix(in srgb,var(--blue-3) 9%,transparent)}
 .det-note.blue > b{color:var(--accent)}
@@ -816,7 +817,7 @@ footer h4{font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:
 footer p, footer li{font-size:14px; color:#c8dcef}
 footer ul{list-style:none; margin:0; padding:0; display:grid; gap:9px}
 footer img{height:34px; margin-bottom:16px}
-.footnote{margin-top:34px; padding-top:20px; border-top:1px solid rgba(255,255,255,.12); font-size:12.5px; color:#7f9db8; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
+.footnote{margin-top:34px; padding-top:20px; border-top:1px solid rgba(255,255,255,.12); font-size:13px; color:#7f9db8; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
 
 /* ---------- terminal spotlight (section 05) ---------- */
 #terminal .sechead{margin-bottom:0}
@@ -833,7 +834,7 @@ footer img{height:34px; margin-bottom:16px}
   background:linear-gradient(180deg,var(--blue-3),var(--green))}
 .t-step b{display:block; font:800 11px/1 inherit; letter-spacing:.16em; color:var(--ink-3); margin-bottom:9px}
 .t-step h4{font-size:14.5px; margin-bottom:6px}
-.t-step p{font-size:12.5px; color:var(--ink-2); line-height:1.5}
+.t-step p{font-size:13px; color:var(--ink-2); line-height:1.5}
 .t-jump{display:flex; flex-wrap:wrap; gap:7px; margin-top:24px}
 .t-jump a{
   display:inline-flex; align-items:center; gap:7px; text-decoration:none;
@@ -841,7 +842,7 @@ footer img{height:34px; margin-bottom:16px}
   background:var(--panel); color:var(--ink-2); font:600 13px/1 inherit; transition:.18s var(--ease);
 }
 .t-jump a:hover{border-color:var(--green); color:var(--ink); background:var(--panel-2)}
-.t-jump a i{font-style:normal; font-weight:800; font-size:11px; color:var(--green-2); letter-spacing:.08em}
+.t-jump a i{font-style:normal; font-weight:800; font-size:12px; color:var(--green-2); letter-spacing:.08em}
 
 .t-pillars{display:grid; gap:16px; margin-top:26px}
 .t-pillar{
@@ -860,8 +861,8 @@ footer img{height:34px; margin-bottom:16px}
   padding:16px 16px 15px; break-inside:avoid;
 }
 .t-block h4{font-size:15px; display:flex; align-items:baseline; gap:9px; margin-bottom:10px}
-.t-block h4 em{font-style:normal; font-size:11.5px; font-weight:800; color:var(--ink-3); letter-spacing:.1em}
-.t-block ul{margin:0; padding-left:17px; display:grid; gap:7px; font-size:13.4px; color:var(--ink-2); line-height:1.55}
+.t-block h4 em{font-style:normal; font-size:12px; font-weight:800; color:var(--ink-3); letter-spacing:.1em}
+.t-block ul{margin:0; padding-left:17px; display:grid; gap:7px; font-size:13.5px; color:var(--ink-2); line-height:1.55}
 .t-block ul li::marker{color:var(--green)}
 .t-block ul b{color:var(--ink); font-weight:650}
 .t-block.wide{grid-column:1/-1}
@@ -875,7 +876,7 @@ footer img{height:34px; margin-bottom:16px}
   border:1px solid rgba(107,186,61,.42); background:color-mix(in srgb,var(--green) 8%,transparent);
 }
 .t-note > b{display:block; font:800 11.5px/1 inherit; letter-spacing:.16em; color:var(--green-2); margin-bottom:8px}
-.t-note p{font-size:13.6px; color:var(--ink-2); line-height:1.55}
+.t-note p{font-size:13.5px; color:var(--ink-2); line-height:1.55}
 .t-note p b{color:var(--ink); font-weight:700}
 .t-note.blue{border-color:rgba(47,134,216,.42); background:color-mix(in srgb,var(--blue-3) 9%,transparent)}
 .t-note.blue > b{color:var(--accent)}
@@ -883,10 +884,10 @@ footer img{height:34px; margin-bottom:16px}
 .t-two{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px}
 .t-eng{display:grid; gap:10px; margin-top:14px}
 .t-eng div{border:1px solid var(--line); border-radius:10px; background:var(--panel-2); padding:12px 14px; break-inside:avoid}
-.t-eng b{font-size:13.8px}
+.t-eng b{font-size:13.5px}
 .t-eng span{display:block; font-size:13px; color:var(--ink-2); margin-top:4px; line-height:1.5}
 .t-val{list-style:none; margin:14px 0 0; padding:0; display:grid; gap:9px}
-.t-val li{display:flex; gap:10px; font-size:13.6px; color:var(--ink-2); line-height:1.5; break-inside:avoid}
+.t-val li{display:flex; gap:10px; font-size:13.5px; color:var(--ink-2); line-height:1.5; break-inside:avoid}
 .t-val li::before{content:"✓"; flex:0 0 auto; color:var(--green-2); font-weight:800}
 .t-start{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr)); gap:10px; margin-top:16px}
 .t-start div{border:1px solid var(--line); border-radius:10px; background:var(--panel); padding:13px 14px; break-inside:avoid}
@@ -1070,6 +1071,11 @@ footer img{height:34px; margin-bottom:16px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}
   .rv{opacity:1; transform:none}}
+/* small-text pass is for screens; print keeps the old sizes so the PDF stays 24 pages */
+@media print{
+  .tag{font-size:11px} .packwhat,.t-step p,.footnote{font-size:12.5px}
+  .t-block ul{font-size:13.4px} .t-val li,.t-note p{font-size:13.6px}
+}
 </style>
 </head>
 <body>
@@ -1349,6 +1355,8 @@ footer img{height:34px; margin-bottom:16px}
         <a href="#cat-terminal" style="color:var(--green-2); font-weight:700; text-decoration:none">See the full terminal scope ↓</a></p></div>
       <div class="sector rv"><svg><use href="#i-bolt"/></svg><h4>Power stations</h4><p>Operation and maintenance of electrical power generation assets.</p></div>
       <div class="sector rv"><svg><use href="#i-solar"/></svg><h4>Solar &amp; renewables</h4><p>Turn-key PV, off-grid, solar irrigation and street lighting; CSP for process heat.</p></div>
+      <div class="sector rv"><svg><use href="#i-mine"/></svg><h4>Mining &amp; minerals processing</h4><p>New for 2026 — our plant start-up, O&amp;M, energy, laboratory and safety services, packaged for mineral-processing plants.
+        <a href="#pack-mining" style="color:var(--green-2); font-weight:700; text-decoration:none">See Package 06 ↓</a></p></div>
       <div class="sector rv"><svg><use href="#i-lab"/></svg><h4>Laboratories</h4><p>Full laboratory outsourcing, ISO 17025 accreditation, LIMS, greenfield lab build.</p></div>
     </div>
   </div>
@@ -3380,6 +3388,12 @@ function pkPeek(){
 pkTrack.addEventListener("scroll", ()=>requestAnimationFrame(pkPeek), {passive:true});
 addEventListener("resize", pkPeek);
 pkPeek();
+/* an in-page #pack-<id> link (e.g. the mining sector card) slides to that package */
+document.addEventListener("click", e=>{
+  const a = e.target.closest('a[href^="#pack-"]'); if(!a) return;
+  const i = PACKS.findIndex(p => "#pack-" + p.id === a.getAttribute("href")); if(i < 0) return;
+  e.preventDefault(); pkGo(i); pkReveal();
+});
 pkTrack.addEventListener("keydown", e=>{
   if(e.key === "ArrowRight"){ e.preventDefault(); pkStep(1); }
   else if(e.key === "ArrowLeft"){ e.preventDefault(); pkStep(-1); }

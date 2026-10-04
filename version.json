@@ -1,7 +1,7 @@
 {
-    "version":  "2026.10.05-1",
+    "version":  "2026.10.05-2",
     "released":  "5 October 2026",
     "file":  "index.html",
-    "notes":  "Design polish: phone chapter menu with Contact, cleaner package slider, aligned lifecycle cards, one-row category chips on phones, clearer hero wording and search hint",
-    "published":  "2026-10-05 00:31"
+    "notes":  "Mining sector card + larger small text",
+    "published":  "2026-10-05 00:49"
 }
