@@ -1,7 +1,7 @@
 {
-    "version":  "2026.10.04-1",
-    "released":  "4 October 2026",
+    "version":  "2026.10.05-1",
+    "released":  "5 October 2026",
     "file":  "index.html",
-    "notes":  "Package 06 Mining \u0026 Minerals Processing",
-    "published":  "2026-10-04 18:53"
+    "notes":  "Design polish: phone chapter menu with Contact, cleaner package slider, aligned lifecycle cards, one-row category chips on phones, clearer hero wording and search hint",
+    "published":  "2026-10-05 00:31"
 }
